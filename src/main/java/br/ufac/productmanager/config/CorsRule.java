@@ -16,7 +16,8 @@ public class CorsRule {
 
         CorsConfiguration configCors = new CorsConfiguration();
         configCors.setAllowCredentials(true);
-        configCors.setAllowedOrigins(Arrays.asList("https://localhost:4200"));
+        // Front End URL
+        configCors.setAllowedOrigins(Arrays.asList("*"));
         configCors.setAllowedMethods(Arrays.asList("*"));
         configCors.setAllowedHeaders(Arrays.asList("*"));
 
