@@ -17,7 +17,7 @@ public class CorsRule {
         CorsConfiguration configCors = new CorsConfiguration();
         configCors.setAllowCredentials(true);
         // Front End URL
-        configCors.setAllowedOrigins(Arrays.asList("*"));
+        configCors.setAllowedOrigins(Arrays.asList("https://frontend-razr.herokuapp.com"));
         configCors.setAllowedMethods(Arrays.asList("*"));
         configCors.setAllowedHeaders(Arrays.asList("*"));
 
