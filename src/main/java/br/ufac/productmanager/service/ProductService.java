@@ -2,6 +2,7 @@ package br.ufac.productmanager.service;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.zip.DataFormatException;
@@ -46,6 +47,16 @@ public class ProductService implements ICrudService<Product>{
     
     public List<Product> getByTeam(Team team) {
         List<Product> products = repo.findByTeam(team);
+        return products;
+    }
+    
+    public List<Product> getAllByFirstSA(LocalDate firstSA) {
+        List<Product> products = repo.findAllByFirstSA(firstSA);
+        return products;
+    }
+    
+    public List<Product> getAllByFirstSABetween(LocalDate firstSAStart, LocalDate firstSAEnd) {
+        List<Product> products = repo.findAllByFirstSABetween(firstSAStart, firstSAEnd);
         return products;
     }
 

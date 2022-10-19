@@ -40,7 +40,7 @@ import br.ufac.productmanager.service.UpgradeService;
 import br.ufac.productmanager.service.UserService;
 
 @RestController
-@CrossOrigin("https://localhost:9000")
+@CrossOrigin("https://backend-razr.herokuapp.com/")
 @RequestMapping("/log/{id}")
 public class LogController implements ICrudLog{
 

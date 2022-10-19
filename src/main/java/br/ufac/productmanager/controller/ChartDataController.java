@@ -12,13 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.ufac.productmanager.config.ChartData;
-import br.ufac.productmanager.model.DistribuitionModel;
 import br.ufac.productmanager.model.Product;
 import br.ufac.productmanager.model.ProductScope;
 import br.ufac.productmanager.model.Team;
-import br.ufac.productmanager.model.TeamFormation;
 import br.ufac.productmanager.model.User;
-import br.ufac.productmanager.service.DistribuitionModelService;
 import br.ufac.productmanager.service.ProductScopeService;
 import br.ufac.productmanager.service.ProductService;
 import br.ufac.productmanager.service.TeamFormationService;

@@ -1,5 +1,6 @@
 package br.ufac.productmanager.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,20 @@ public class ProductController implements ICrudController<Product>{
     	// product.setProductPhoto(decompressedImage);
         
         return new ResponseEntity<>(product, HttpStatus.OK);
+    }
+
+    // @Override
+    @GetMapping("/seach/products/{firstDate}/{secondDate}")
+    public ResponseEntity<List<Product>> getAllFirstSABetween(@PathVariable("firstDate") String firstDate, @PathVariable("secondDate") String secondDate){
+
+        // String dateOne = firstDate;
+        // String dateTwo = secondDate;
+
+        LocalDate fDate = LocalDate.parse(firstDate);
+        LocalDate sDate = LocalDate.parse(secondDate);
+
+        List<Product> products = service.getAllByFirstSABetween(fDate, sDate);
+        return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
     // @Override
