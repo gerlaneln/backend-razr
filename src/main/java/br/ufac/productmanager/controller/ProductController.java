@@ -1,6 +1,9 @@
 package br.ufac.productmanager.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,13 +49,12 @@ public class ProductController implements ICrudController<Product>{
 
     // @Override
     @GetMapping("/seach/products/{firstDate}/{secondDate}")
-    public ResponseEntity<List<Product>> getAllFirstSABetween(@PathVariable("firstDate") String firstDate, @PathVariable("secondDate") String secondDate){
+    public ResponseEntity<List<Product>> getAllFirstSABetween(@PathVariable("firstDate") String firstDate, @PathVariable("secondDate") String secondDate) throws ParseException{
 
-        // String dateOne = firstDate;
-        // String dateTwo = secondDate;
+        // Date date1=new SimpleDateFormat("dd/MM/yyyy").parse(sDate1);  
 
-        LocalDate fDate = LocalDate.parse(firstDate);
-        LocalDate sDate = LocalDate.parse(secondDate);
+        Date fDate = new SimpleDateFormat("yyyy-MM-dd").parse(firstDate);
+        Date sDate = new SimpleDateFormat("yyyy-MM-dd").parse(secondDate);
 
         List<Product> products = service.getAllByFirstSABetween(fDate, sDate);
         return new ResponseEntity<>(products, HttpStatus.OK);
