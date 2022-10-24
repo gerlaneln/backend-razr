@@ -14,10 +14,12 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.stereotype.Service;
 
 import br.ufac.productmanager.config.TimeUtils;
+import br.ufac.productmanager.model.History;
 import br.ufac.productmanager.model.LogProduct;
 import br.ufac.productmanager.model.Product;
 import br.ufac.productmanager.model.Team;
 import br.ufac.productmanager.model.User;
+import br.ufac.productmanager.repository.HistoryRepository;
 import br.ufac.productmanager.repository.LogProductRepository;
 import br.ufac.productmanager.repository.ProductRepository;
 
