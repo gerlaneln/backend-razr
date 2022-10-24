@@ -53,9 +53,9 @@ public class ProductController implements ICrudController<Product>{
 
         // Date date1=new SimpleDateFormat("dd/MM/yyyy").parse(sDate1);  
 
-        Date fDate = new SimpleDateFormat("yyyy-MM-dd").parse(firstDate);
-        Date sDate = new SimpleDateFormat("yyyy-MM-dd").parse(secondDate);
-
+        LocalDate fDate = LocalDate.parse(firstDate);
+        LocalDate sDate = LocalDate.parse(secondDate);
+        
         List<Product> products = service.getAllByFirstSABetween(fDate, sDate);
         return new ResponseEntity<>(products, HttpStatus.OK);
     }

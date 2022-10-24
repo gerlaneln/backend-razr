@@ -12,5 +12,6 @@ import br.ufac.productmanager.model.Team;
 public interface ProductRepository extends JpaRepository<Product, Long>{
     List<Product> findByTeam(Team team);
     List<Product> findAllByFirstSA(LocalDate firstSA);
-    List<Product> findAllByFirstSABetween(Date firstSAStart, Date firstSAEnd);
+    List<Product> findAllByFirstSABetween(LocalDate firstSAStart, LocalDate firstSAEnd);
+
 }

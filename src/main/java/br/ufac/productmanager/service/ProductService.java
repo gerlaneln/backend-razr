@@ -61,7 +61,7 @@ public class ProductService implements ICrudService<Product>{
         return products;
     }
     
-    public List<Product> getAllByFirstSABetween(Date firstSAStart, Date firstSAEnd) {
+    public List<Product> getAllByFirstSABetween(LocalDate firstSAStart, LocalDate firstSAEnd) {
         List<Product> products = repo.findAllByFirstSABetween(firstSAStart, firstSAEnd);
         return products;
     }
