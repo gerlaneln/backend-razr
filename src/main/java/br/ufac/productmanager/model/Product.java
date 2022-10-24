@@ -35,14 +35,10 @@ public class Product implements Serializable {
     private Boolean isODM1 = false;
 
     @Column(name = "first_sa", nullable = false)
-    @Temporal(TemporalType.DATE)
-    //@JsonFormat(pattern = "yyyy-MM-dd")
-    private Date firstSA;
+    private LocalDate firstSA;
 
     @Column(name = "first_ug", nullable=true)
-    @Temporal(TemporalType.DATE)
-    //@JsonFormat(pattern = "yyyy-MM-dd")
-    private Date firstUG;
+    private LocalDate firstUG;
 
     @Column(name = "gpd_lead", nullable = false)
     private String gpdLead;
@@ -54,10 +50,6 @@ public class Product implements Serializable {
     @Lob
     @Column(name = "product_photo",columnDefinition = "BLOB", nullable=true)
     private byte[] productPhoto;
-
-    // XXX
-    // @OneToOne(optional = false, mappedBy = "product")
-    // private ProductScope productScope;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "product_family_fk", nullable=false)
@@ -104,19 +96,19 @@ public class Product implements Serializable {
         this.isODM1 = isODM1;
     }
 
-    public Date getFirstSA() {
+    public LocalDate getFirstSA() {
         return firstSA;
     }
 
-    public void setFirstSA(Date firstSA) {
+    public void setFirstSA(LocalDate firstSA) {
         this.firstSA = firstSA;
     }
 
-    public Date getFirstUG() {
+    public LocalDate getFirstUG() {
         return firstUG;
     }
 
-    public void setFirstUG(Date firstUG) {
+    public void setFirstUG(LocalDate firstUG) {
         this.firstUG = firstUG;
     }
 
@@ -177,16 +169,6 @@ public class Product implements Serializable {
         this.lifeCycleStatus = lifeCycleStatus;
     }
 
-    // // XXX
-    // public ProductScope getProductScope() {
-    //     return productScope;
-    // }
-
-    // // XXX
-    // public void setProductScope(ProductScope productScope) {
-    //     this.productScope = productScope;
-    // }
-
     @Override
     public String toString() {
         return "[\""+getName()+"\","+getId()+"]";
@@ -228,19 +210,52 @@ public class Product implements Serializable {
             		   		 team.toString(),
             		   		 snapshot);
     }
-
-    public String toHistory(String snapshot) {
+    
+    public String diff(Product next) {
         
-        String history = """
-                         {
-                            "name":"%s",
-                            "first"
-                         }
-                            """;
-
-
-
-        return history;
+        String diff = new String();
+        
+        //if there is a change in the name, write to the diff string 
+        diff = this.name.equals(next.getName()) ?
+                "" : "Name changed from %s to %s \n".formatted(name, next.getName());
+        
+        //if the ODM1 status changed, write to the diff string
+        diff = diff.concat(this.isODM1 == next.getIsODM1() ?
+                "" : "ODM1 status changed to %s \n".formatted(next.getIsODM1().toString()));      
+        //if the firstSA date changed, write to the diff string
+        diff = diff.concat(this.firstSA.equals(next.getFirstSA()) ?
+                "" : "First SA date changed from %s to %s \n".formatted(firstSA.toString(),
+                                                                         next.getFirstSA().toString()));
+        
+        //if the GPDLead changed, write to the diff string
+        diff = diff.concat(this.gpdLead.equals(next.getGpdLead()) ?
+                "" : "GPD Lead changed from %s to %s \n".formatted(gpdLead, next.getGpdLead()));
+        
+        //if the product family changed, write to the diff string
+        diff = diff.concat(this.productFamily.equals(next.getProductFamily()) ?
+                "" : "Product family changed from %s to %s \n".formatted(productFamily.getNameFamily(),
+                                                                          next.getProductFamily().getNameFamily()));
+        
+        diff = diff.concat(this.chipset != null ?
+                //if chipset is other than null,
+                //write the changes if they exists
+                //or else write nothing if they don't exists.
+                this.chipset.equals(next.getChipset()) ?
+                        "" : "Chipset changed from %s to %s \n".formatted(chipset.getChipsetName(),
+                                                                           next.getChipset().getChipsetName())
+                //if chipset is null
+                //check if the new version of product have a chipset,
+                //if so, write that is the first chipset of this product,
+                //else, write nothing.
+                            : next.getChipset() != null ?
+                                    "Chipset set for first time \n" : " ");
+        
+        //if the life cycle status changed, write to the diff string
+        diff = diff.concat(this.lifeCycleStatus.equals(next.getLifeCycleStatus()) ?
+                "" : "Life Cycle status changed from %s to %s \n".
+                       formatted(lifeCycleStatus.getName(), next.getLifeCycleStatus().getName()));
+        
+        return diff;
     }
 
 }

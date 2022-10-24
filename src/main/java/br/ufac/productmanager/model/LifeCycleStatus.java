@@ -1,6 +1,7 @@
 package br.ufac.productmanager.model;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -50,5 +51,23 @@ public class LifeCycleStatus implements Serializable{
                               snapshot);
     	
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        LifeCycleStatus other = (LifeCycleStatus) obj;
+        return Objects.equals(id, other.id) && Objects.equals(name, other.name);
+    }
+    
     
 }

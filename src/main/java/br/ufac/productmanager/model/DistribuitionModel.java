@@ -30,10 +30,10 @@ public class DistribuitionModel implements Serializable{
     @Column(nullable = false)
     private Long personnel;
 
-    @Column(name="ta_date", nullable = false)
-    //@Temporal(TemporalType.DATE)
-    //@JsonFormat(pattern="yyyy-MM-dd")
-    private LocalDate taDate;
+    // @Column(name="ta_date", nullable = false)
+    // //@Temporal(TemporalType.DATE)
+    // //@JsonFormat(pattern="yyyy-MM-dd")
+    // private LocalDate taDate;
     
     @Column(name="before_ta", nullable = false)
     private Integer beforeTa;
@@ -70,13 +70,13 @@ public class DistribuitionModel implements Serializable{
         this.modelName = modelName;
     }
 
-    public LocalDate getTaDate() {
-        return taDate;
-    }
+    // public LocalDate getTaDate() {
+    //     return taDate;
+    // }
 
-    public void setTaDate(LocalDate taDate) {
-        this.taDate = taDate;
-    }
+    // public void setTaDate(LocalDate taDate) {
+    //     this.taDate = taDate;
+    // }
 
     public Integer getBeforeTa() {
         return beforeTa;
@@ -121,7 +121,6 @@ public class DistribuitionModel implements Serializable{
 	                     "idModel":"%s",
 	                     "modelName":"%s",
 	                     "personnel":"%s",
-	                     "taDate":"%s",
 	                     "beforeTa":"%s",
 	                     "afterTa":"%s",
 	                     "region":%s,
@@ -133,7 +132,6 @@ public class DistribuitionModel implements Serializable{
     			return log.formatted(id,
 							  		 modelName,
 							  		 personnel,
-							  		 taDate,
 							  		 beforeTa,
 							  		 afterTa,
 							  		 region.toString(),

@@ -26,11 +26,15 @@ public class ProductService implements ICrudService<Product>{
 
     private final ProductRepository repo;
     private final LogProductRepository logRepo;
+    private final HistoryRepository historyRepo;
 
     @Autowired
-    public ProductService(ProductRepository repo, LogProductRepository logRepo){
+    public ProductService(ProductRepository repo, LogProductRepository logRepo,
+            HistoryRepository historyRepo){
+        
         this.repo = repo;
         this.logRepo = logRepo;
+        this.historyRepo = historyRepo;
     }
 
     @Override
@@ -62,18 +66,37 @@ public class ProductService implements ICrudService<Product>{
 
     @Override
     public Product save(Product product, User user) {
-    	//Get the current instant in milliseconds
-    	Long instantMilli = TimeUtils.getLongInstant();
 
+    	String diffResponse = new String();
+    	
+    	//in this case, that save operation UPDATES an Product
+    	if(product.getId() != null) {
+    	    Product lastVersion = repo.findById(product.getId()).get();
+    	    //return the differences between the product to be saved
+    	    //and the old version of this product saved in DB
+    	    diffResponse = lastVersion.diff(product);
+    	} else { //in this case, that save operation CREATES an new Product in DB
+    	    diffResponse = "Product created";
+    	}
+    	
         //Save the received Product in DB
-    	Product savedProduct = repo.save(product);
+        Product savedProduct = repo.save(product);
+    	
+        //Get the current instant in milliseconds
+        Long instantMilli = TimeUtils.getLongInstant();
+    	
+        //Gets the username from the user responsible for saving this product
+        String userName = user.getName();
+        
+        //Create an history for that save operation
+        History productHistory = new History(new Date(instantMilli), diffResponse, savedProduct, userName);
+        historyRepo.save(productHistory);
 
         //Make a string date from the instant above
     	//Create the log text, with object's fields and date of save
     	String logCommentary = savedProduct.toLog(TimeUtils.getStringDateHourFromMilli(instantMilli));
         
     	//Creates a new LogProduct, associated to this Product
-        String userName = user.getName();
         LogProduct logProduct = new LogProduct(new Date(instantMilli),
         		logCommentary, savedProduct, userName);
         //Save the created LogProduct in DB

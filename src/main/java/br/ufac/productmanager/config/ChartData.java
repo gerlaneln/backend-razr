@@ -1,6 +1,8 @@
 package br.ufac.productmanager.config;
 
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -30,16 +32,7 @@ public class ChartData {
             String toDate, String color, long personnel){  
     
         String s = """
-                      {
-                       "category":"%s",
-                       "fromDate":"%s",
-                       "toDate":"%s",
-                       "columnSettings":{
-                        "fill":"%s"
-                       },
-                       "personnel":%s 
-                      } 
-                         """;
+                      {"category":"%s","fromDate":"%s","toDate":"%s","columnSettings":{"fill":"%s"},"personnel":%s}""";
 
         
         
@@ -64,8 +57,8 @@ public class ChartData {
         int afterTa = scope.getDistModel().getAfterTa();
         int projectDuration = beforeTa+afterTa+1;
         
-        LocalDate taDate = scope.getDistModel().getTaDate();
-        LocalDate projectStart = taDate.minusMonths(beforeTa).plusDays(15);
+        LocalDate taDate = scope.getProduct().getFirstSA();
+        LocalDate projectStart = taDate.minusMonths(beforeTa).plusDays(14);
              
         long personnel = scope.getDistModel().getPersonnel()/(projectDuration);
         
@@ -114,13 +107,18 @@ public class ChartData {
         JSONArray = new String("[\n");
         List<String> categoriesList = new ArrayList<String>();
         
-        for(int i = 0; i < listOfScopes.size(); i++) {
+        for(ProductScope scope : listOfScopes) {
             
-            String category = listOfScopes.get(i).getProduct().getTeam().getName();
+            //if scope is null, go to the next scope in the list
+            if(scope == null) {
+                continue;
+            }
+            
+            String category = scope.getProduct().getTeam().getName();
             
             categoriesList.add(category);
             
-            JSONArray = JSONArray + createJSONProductBar(listOfScopes.get(i), category);
+            JSONArray = JSONArray + createJSONProductBar(scope, category);
         }
         
         String categoryJSON = createCategoriesArray(categoriesList);
